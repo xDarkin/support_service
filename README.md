@@ -23,7 +23,7 @@ pipenv shell
 ▾ users
     ├─ apps.py # Django apps configuration
     ├─ urls.py # pre-controller
-    ├─ views.py # Endopints / post-controller
+    ├─ api.py # Endopints / post-controller
     ├─ models.py # Database tables mapper
     └─ admin.py # Database tables mapper
 ```

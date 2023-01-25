@@ -10,7 +10,11 @@ class Ticket(TimeStampMixin):
         related_name="customer_tickets",
     )
     manager = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, default=None, on_delete=models.DO_NOTHING, related_name="manager_tickets"
+        settings.AUTH_USER_MODEL,
+        null=True,
+        default=None,
+        on_delete=models.DO_NOTHING,
+        related_name="manager_tickets",
     )
 
     header = models.CharField(max_length=255)

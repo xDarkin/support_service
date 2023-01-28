@@ -15,3 +15,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         attrs["password"] = make_password(attrs["password"])
         return attrs
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "role", "is_active", "last_login"]

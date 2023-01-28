@@ -5,4 +5,4 @@ from tickets.models import Ticket
 
 @admin.register(Ticket)
 class TicketAdmin(TimeStampReadonlyAdmin):
-    pass
+    list_display = ["id", "customer", "header"]

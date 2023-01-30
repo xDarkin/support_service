@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.models import Ticket
+from tickets.permissions import RoleIsAdmin, RoleIsManager, RoleIsUser, TicketManager, TicketOwner
 from tickets.serializers import TicketLightSerializer, TicketSerializer
-from tickets.permissions import TicketOwner, TicketManager, RoleIsUser, RoleIsManager, RoleIsAdmin
 
 
 class TicketAPISet(ModelViewSet):

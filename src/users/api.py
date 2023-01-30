@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
-from users.serializers import UserRegistrationSerializer, UserSerializer
 from users.permissions import RoleIsAdmin, UserOwner
-from rest_framework.permissions import AllowAny
+from users.serializers import UserRegistrationSerializer, UserSerializer
 
 User = get_user_model()
 

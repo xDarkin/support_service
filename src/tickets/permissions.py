@@ -1,6 +1,6 @@
 from rest_framework.permissions import BasePermission
-from users.constants import Role
 from tickets.models import Ticket
+from users.constants import Role
 
 
 class RoleIsAdmin(BasePermission):

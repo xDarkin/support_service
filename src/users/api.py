@@ -1,28 +1,31 @@
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
-from tickets.models import Ticket
-from tickets.permissions import RoleIsAdmin, RoleIsManager, RoleIsUser, TicketManager, TicketOwner
-from tickets.serializers import TicketLightSerializer, TicketSerializer
+from users.permissions import RoleIsAdmin, UserOwner
+from users.serializers import UserRegistrationSerializer, UserSerializer
+
+User = get_user_model()
 
 
-class TicketAPISet(ModelViewSet):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
-    model = Ticket
+class UserAPISet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    model = User
 
     def get_permissions(self):
         if self.action == "list":
-            permission_classes = [RoleIsAdmin | RoleIsManager]
+            permission_classes = [RoleIsAdmin]
         elif self.action == "create":
-            permission_classes = [RoleIsUser]
+            permission_classes = [AllowAny]
         elif self.action == "retrieve":
-            permission_classes = [TicketOwner | TicketManager | RoleIsAdmin]
+            permission_classes = [UserOwner | RoleIsAdmin]
         elif self.action == "update":
-            permission_classes = [RoleIsAdmin | TicketManager]
+            permission_classes = [RoleIsAdmin]
         elif self.action == "destroy":
-            permission_classes = [RoleIsAdmin | TicketManager]
+            permission_classes = [RoleIsAdmin]
         else:
             permission_classes = []
 
@@ -30,21 +33,21 @@ class TicketAPISet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = TicketLightSerializer(queryset, many=True)
+        serializer = UserSerializer(queryset, many=True)
         response = ResponseMultiSerializer({"results": serializer.data})
 
         return JsonResponse(response.data)
 
     def retrieve(self, request, *args, **kwargs):
-        instance: Ticket = self.get_object()
-        serializer = TicketSerializer(instance)
+        instance: User = self.get_object()
+        serializer = UserSerializer(instance)
         response = ResponseSerializer({"result": serializer.data})
 
         return JsonResponse(response.data)
 
     def create(self, request, *args, **kwargs):
         context = {"request": self.request}
-        serializer = TicketSerializer(data=request.data, context=context)
+        serializer = UserRegistrationSerializer(data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         response = ResponseSerializer({"result": serializer.data})
@@ -52,9 +55,9 @@ class TicketAPISet(ModelViewSet):
         return JsonResponse(response.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
-        instance: Ticket = self.get_object()
+        instance: User = self.get_object()
         context = {"request": self.request}
-        serializer = TicketSerializer(instance, data=request.data, context=context, partial=True)
+        serializer = UserSerializer(instance, data=request.data, context=context, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         response = ResponseSerializer({"result": serializer.data})
@@ -62,7 +65,7 @@ class TicketAPISet(ModelViewSet):
         return JsonResponse(response.data)
 
     def destroy(self, request, *args, **kwargs):
-        instance: Ticket = self.get_object()
+        instance: User = self.get_object()
         instance.delete()
 
         return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)

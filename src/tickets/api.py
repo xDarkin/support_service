@@ -5,6 +5,7 @@ from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.models import Ticket
 from tickets.permissions import RoleIsAdmin, RoleIsManager, RoleIsUser, TicketManager, TicketOwner
 from tickets.serializers import TicketLightSerializer, TicketSerializer
+from users.constants import Role
 
 
 class TicketAPISet(ModelViewSet):
@@ -14,7 +15,7 @@ class TicketAPISet(ModelViewSet):
 
     def get_permissions(self):
         if self.action == "list":
-            permission_classes = [RoleIsAdmin | RoleIsManager]
+            permission_classes = [RoleIsAdmin | RoleIsManager | RoleIsUser]
         elif self.action == "create":
             permission_classes = [RoleIsUser]
         elif self.action == "retrieve":
@@ -29,7 +30,13 @@ class TicketAPISet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        if request.user.role == Role.ADMIN:
+            queryset = self.get_queryset()
+        elif request.user.role == Role.MANAGER:
+            queryset = Ticket.objects.filter(manager=request.user)
+        else:
+            queryset = Ticket.objects.filter(customer=request.user)
+
         serializer = TicketLightSerializer(queryset, many=True)
         response = ResponseMultiSerializer({"results": serializer.data})
 

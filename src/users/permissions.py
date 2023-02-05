@@ -21,5 +21,5 @@ class RoleIsUser(BasePermission):
 
 
 class UserOwner(BasePermission):
-    def has_object_permission(self, request, view, obj: User):
+    def has_object_permission(self, request, view, obj):
         return obj.email == request.user.email

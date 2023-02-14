@@ -9,3 +9,6 @@ __pycache__/
 
 # JetBrains
 .idea/
+
+# MyPy
+.mypy_cache/

@@ -66,13 +66,23 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": ROOT_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ROOT_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": getenv("PSQL_NAME"),
+        "USER": getenv("PSQL_USER"),
+        "PASSWORD": getenv("PSQL_PASSWORD"),
+        "HOST": getenv("PSQL_HOST"),
+        "PORT": getenv("PSQL_PORT"),
     }
 }
-
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

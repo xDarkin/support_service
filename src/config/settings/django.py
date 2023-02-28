@@ -1,12 +1,12 @@
-from datetime import timedelta
+# from distutils.util import strtobool
 from os import getenv
 from pathlib import Path
 
-SRC_DIR = Path(__file__).resolve().parent.parent
+SRC_DIR = Path(__file__).resolve().parent.parent.parent
 ROOT_DIR = SRC_DIR.parent
 
 SECRET_KEY = getenv("DJANGO_SECRET_KEY", default="INVALID")
-DEBUG = getenv("DJANGO_DEBUG", default=False)
+DEBUG = (False if getenv("DJANGO_DEBUG") == "" else True)
 ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", default="").split(",")
 
 # Application definition
@@ -110,40 +110,8 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
+STATIC_ROOT = ROOT_DIR / "staticfiles"
 STATIC_URL = "static/"
 
 # Set custom user model
 AUTH_USER_MODEL = "users.User"
-
-# Exchange rates service (Alpha Vantage)
-ALPHA_VANTAGE_BASE_URL = getenv(
-    "ALPHA_VANTAGE_BASE_URL",
-    default="https://www.alphavantage.co",
-)
-ALPHA_VANTAGE_API_KEY = getenv("ALPHA_VANTAGE_API_KEY")
-
-
-# DRF configuration
-REST_FRAMEWORK = {
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
-    ],
-    "DEFAULT_PARSER_CLASSES": [
-        "rest_framework.parsers.JSONParser",
-    ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
-}
-
-
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
-    "AUTH_HEADER_TYPES": ("Bearer",),
-}

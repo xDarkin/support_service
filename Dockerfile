@@ -25,3 +25,7 @@ RUN pipenv sync --system ${PIPENV_EXTRA_ARGS}
 
 # Copy project stuff
 COPY ./ ./
+
+# Install Gunicorn
+RUN pip install gunicorn
+RUN python src/manage.py collectstatic --noinput

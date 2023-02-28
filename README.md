@@ -75,7 +75,7 @@ erDiagram
 docker-compose up -d
 ```
 
-### Usefull commands
+### Useful commands
 ```bash
 # Build images
 docker-compose build

@@ -123,4 +123,6 @@ docker-compose up -d
 # Create a superuser(admin)
 python src/manage.py createsuperuser
 ```
+
+# Structure diagram
 ![Structure diagram](diagram.png)

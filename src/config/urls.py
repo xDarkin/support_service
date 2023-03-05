@@ -1,4 +1,3 @@
-import permission as permission
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -12,7 +11,7 @@ schema_view = get_schema_view(
         title="Support API",
         default_version="",
         description="Educational test OpenAPI",
-        license=openapi.License(name="MIT License")
+        license=openapi.License(name="MIT License"),
     ),
     public=True,
     permission_classes=[permissions.AllowAny],

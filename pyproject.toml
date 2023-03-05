@@ -46,7 +46,7 @@ warn_unused_ignores = true
 show_error_codes = true
 
 [[tool.mypy.overrides]]
-module = []
+module = ['drf_yasg', 'drf_yasg.views']
 ignore_missing_imports = true
 
 [tool.django-stubs]

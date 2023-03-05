@@ -104,3 +104,22 @@ docker-compose logs --tail 10 app
 # get flowed logs
 docker-compose logs -f app
 ```
+
+
+# Deployment process
+```bash
+# Clone project
+git clone git@github.com:xDarkin/support_service.git
+
+# Make a copy of .env.default file and adjust it
+## name it .env
+
+# Build image with Docker
+docker-compose build
+
+# Run containers
+docker-compose up -d
+
+# Create a superuser(admin)
+python src/manage.py createsuperuser
+```
